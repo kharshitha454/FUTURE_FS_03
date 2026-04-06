@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Brew & Bloom Café – Hyderabad</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+
+    /* ── RESET & VARIABLES ── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --brown-dark: #2C1A0E;
+      --brown-mid: #5C3D2E;
+      --caramel: #C8853A;
+      --cream: #F9F4EC;
+      --warm-white: #FEF9F4;
+      --blush: #E8C9B4;
+      --text-mid: #6B4C35;
+      --text-light: #A0785A;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--warm-white);
+      color: var(--brown-dark);
+      overflow-x: hidden;
+    }
+
+    /* ── NAVBAR ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 1rem 4rem;
+      background: rgba(249,244,236,0.95);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(92,61,46,0.1);
+      z-index: 1000;
+      transition: box-shadow 0.3s;
+    }
+    nav.scrolled { box-shadow: 0 4px 24px rgba(44,26,14,0.12); }
+
+    .logo {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--brown-dark);
+      letter-spacing: 0.02em;
+    }
+    .logo span { color: var(--caramel); font-style: italic; }
+
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      text-decoration: none;
+      font-size: 0.88rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--text-mid);
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--caramel); }
+
+    .hamburger {
+      display: none;
+      background: none; border: none;
+      font-size: 1.6rem; cursor: pointer;
+      color: var(--brown-dark);
+    }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      gap: 5rem;
+      padding: 8rem 4rem 4rem;
+      background: var(--cream);
+    }
+
+    .hero-text { flex: 1; max-width: 540px; }
+
+    .eyebrow {
+      font-size: 0.78rem;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--caramel);
+      margin-bottom: 1.2rem;
+      display: flex; align-items: center; gap: 0.6rem;
+    }
+    .eyebrow::before {
+      content: '';
+      display: block;
+      width: 28px; height: 1.5px;
+      background: var(--caramel);
+    }
+
+    .hero-text h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 5vw, 4.2rem);
+      line-height: 1.1;
+      margin-bottom: 1.2rem;
+    }
+    .hero-text h1 em { color: var(--caramel); font-style: italic; }
+
+    .hero-sub {
+      font-size: 1.05rem;
+      line-height: 1.85;
+      color: var(--text-mid);
+      margin-bottom: 2.2rem;
+    }
+
+    .hero-buttons { display: flex; gap: 1rem; flex-wrap: wrap; }
+
+    .btn-primary {
+      background: var(--brown-dark); color: var(--cream);
+      padding: 0.85rem 2.2rem; border-radius: 3rem;
+      text-decoration: none; font-size: 0.9rem; font-weight: 500;
+      border: none; cursor: pointer; display: inline-block;
+      transition: background 0.2s, transform 0.15s;
+    }
+    .btn-primary:hover { background: var(--caramel); transform: translateY(-2px); }
+
+    .btn-outline {
+      color: var(--brown-dark);
+      padding: 0.85rem 2.2rem; border-radius: 3rem;
+      text-decoration: none; font-size: 0.9rem; font-weight: 500;
+      border: 1.5px solid var(--brown-mid); display: inline-block;
+      transition: all 0.2s;
+    }
+    .btn-outline:hover { background: var(--brown-dark); color: var(--cream); }
+
+    .hero-visual { flex: 1; max-width: 460px; }
+
+    .hero-img-frame {
+      width: 100%; aspect-ratio: 4/5;
+      background: var(--blush);
+      border-radius: 2rem 6rem 2rem 6rem;
+      display: flex; align-items: center; justify-content: center;
+      position: relative; overflow: hidden;
+    }
+
+    .hero-badge {
+      position: absolute; bottom: 2rem; left: -1.2rem;
+      background: var(--brown-dark); color: var(--cream);
+      padding: 1rem 1.4rem; border-radius: 1rem;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(44,26,14,0.3);
+    }
+    .badge-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem; font-weight: 700;
+      color: var(--caramel); display: block;
+    }
+    .badge-label {
+      font-size: 0.7rem; letter-spacing: 0.1em;
+      text-transform: uppercase; opacity: 0.8;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-bar {
+      background: var(--brown-dark);
+      padding: 0.9rem 0; overflow: hidden;
+      white-space: nowrap;
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 22s linear infinite;
+    }
+    .marquee-item {
+      display: inline-flex; align-items: center; gap: 1rem;
+      padding: 0 2rem;
+      font-size: 0.8rem; font-weight: 500;
+      letter-spacing: 0.12em; text-transform: uppercase;
+      color: var(--blush);
+    }
+    .marquee-dot { color: var(--caramel); }
+    @keyframes marquee {
+      0% { transform: translateX(0); }
+      100% { transform: translateX(-50%); }
+    }
+
+    /* ── SECTION COMMON ── */
+    .section-label {
+      font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.2em; text-transform: uppercase;
+      color: var(--caramel); margin-bottom: 0.6rem; display: block;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      line-height: 1.2; margin-bottom: 2.5rem;
+    }
+
+    /* ── ABOUT ── */
+    #about {
+      display: flex; gap: 5rem; align-items: center;
+      padding: 6rem 4rem;
+      background: var(--warm-white);
+    }
+
+    .about-img { flex: 1; position: relative; }
+    .about-img-box {
+      width: 100%; aspect-ratio: 3/4;
+      background: var(--blush);
+      border-radius: 1rem 4rem 1rem 4rem;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 5rem;
+    }
+    .about-badge {
+      position: absolute; bottom: -1.5rem; right: -1.5rem;
+      background: var(--caramel); color: var(--cream);
+      padding: 1.2rem 1.5rem; border-radius: 1rem;
+      text-align: center;
+      box-shadow: 0 8px 24px rgba(200,133,58,0.35);
+    }
+    .about-badge strong {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem; display: block;
+    }
+    .about-badge span { font-size: 0.72rem; letter-spacing: 0.08em; text-transform: uppercase; opacity: 0.85; }
+
+    .about-text { flex: 1; }
+    .about-text p {
+      font-size: 1rem; line-height: 1.85;
+      color: var(--text-mid); margin-bottom: 1rem;
+    }
+
+    .about-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1rem; margin-top: 2rem;
+    }
+    .stat-card {
+      text-align: center; padding: 1.2rem 0.8rem;
+      border: 1px solid rgba(160,120,90,0.2);
+      border-radius: 1rem; background: var(--cream);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem; font-weight: 700;
+      color: var(--caramel); display: block;
+    }
+    .stat-label {
+      font-size: 0.75rem; letter-spacing: 0.07em;
+      text-transform: uppercase; color: var(--text-light); margin-top: 0.2rem;
+    }
+
+    /* ── MENU ── */
+    #menu {
+      padding: 6rem 4rem;
+      background: var(--cream);
+      text-align: center;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      max-width: 1100px; margin: 0 auto;
+    }
+
+    .menu-card {
+      background: var(--warm-white);
+      padding: 1.8rem; border-radius: 1.2rem;
+      border: 1px solid rgba(160,120,90,0.15);
+      text-align: left;
+      transition: transform 0.25s, box-shadow 0.25s;
+    }
+    .menu-card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 12px 32px rgba(92,61,46,0.1);
+    }
+    .menu-emoji { font-size: 2.5rem; margin-bottom: 1rem; display: block; }
+    .menu-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.1rem; margin-bottom: 0.4rem;
+    }
+    .menu-card p {
+      font-size: 0.85rem; color: var(--text-light);
+      line-height: 1.6; margin-bottom: 1rem;
+    }
+    .menu-footer { display: flex; justify-content: space-between; align-items: center; }
+    .price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem; font-weight: 600; color: var(--caramel);
+    }
+    .order-btn {
+      background: var(--brown-dark); color: var(--cream);
+      border: none; padding: 0.4rem 1rem;
+      border-radius: 2rem; font-family: 'DM Sans', sans-serif;
+      font-size: 0.8rem; cursor: pointer;
+      transition: background 0.2s;
+    }
+    .order-btn:hover { background: var(--caramel); }
+
+    /* ── TESTIMONIALS ── */
+    #testimonials {
+      padding: 6rem 4rem;
+      background: var(--warm-white);
+      text-align: center;
+    }
+
+    .reviews-grid {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 1.5rem; max-width: 1100px; margin: 0 auto;
+    }
+
+    .review-card {
+      background: var(--cream); padding: 2rem;
+      border-radius: 1.2rem; text-align: left;
+      border: 1px solid rgba(160,120,90,0.15);
+      transition: box-shadow 0.2s;
+    }
+    .review-card:hover { box-shadow: 0 8px 28px rgba(92,61,46,0.08); }
+
+    .stars { color: var(--caramel); font-size: 0.95rem; margin-bottom: 1rem; letter-spacing: 0.05em; }
+
+    .review-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.98rem; font-style: italic;
+      line-height: 1.75; color: var(--brown-mid);
+      margin-bottom: 1.5rem;
+    }
+
+    .reviewer { display: flex; align-items: center; gap: 0.8rem; }
+    .reviewer-avatar {
+      width: 40px; height: 40px; border-radius: 50%;
+      background: var(--blush);
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 600; font-size: 0.85rem; color: var(--brown-mid);
+    }
+    .reviewer-name { font-weight: 500; font-size: 0.9rem; color: var(--brown-dark); }
+    .reviewer-sub { font-size: 0.75rem; color: var(--text-light); }
+
+    /* ── CONTACT ── */
+    #contact {
+      padding: 6rem 4rem;
+      background: var(--cream);
+    }
+
+    #contact > .section-label,
+    #contact > .section-title {
+      text-align: center;
+    }
+
+    .contact-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 4rem; max-width: 1000px; margin: 0 auto;
+    }
+
+    .contact-info p {
+      font-size: 0.95rem; line-height: 2.3; color: var(--text-mid);
+    }
+
+    .whatsapp-btn {
+      display: inline-block; margin-top: 1rem;
+      background: #25D366; color: white;
+      padding: 0.7rem 1.6rem; border-radius: 3rem;
+      text-decoration: none; font-size: 0.9rem; font-weight: 500;
+      transition: opacity 0.2s;
+    }
+    .whatsapp-btn:hover { opacity: 0.85; }
+
+    .map-wrap { margin-top: 1.5rem; border-radius: 12px; overflow: hidden; }
+
+    .contact-form-box h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.5rem; margin-bottom: 1.2rem; color: var(--brown-dark);
+    }
+    .contact-form-box input,
+    .contact-form-box textarea {
+      width: 100%; padding: 0.8rem 1rem;
+      border: 1.5px solid rgba(92,61,46,0.15);
+      border-radius: 0.6rem;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      background: var(--warm-white);
+      color: var(--brown-dark);
+      margin-bottom: 1rem; outline: none; display: block;
+      transition: border-color 0.2s;
+    }
+    .contact-form-box input:focus,
+    .contact-form-box textarea:focus { border-color: var(--caramel); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--brown-dark);
+      color: var(--blush);
+      padding: 3.5rem 4rem 2rem;
+    }
+
+    .footer-top {
+      display: flex; justify-content: space-between; align-items: flex-start;
+      flex-wrap: wrap; gap: 2rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      margin-bottom: 1.5rem;
+    }
+
+    .footer-brand h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem; color: var(--cream); margin-bottom: 0.5rem;
+    }
+    .footer-brand p { font-size: 0.85rem; opacity: 0.65; max-width: 240px; line-height: 1.6; }
+
+    .footer-links-col h4 {
+      font-size: 0.75rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: var(--cream);
+      margin-bottom: 1rem;
+    }
+    .footer-links-col ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+    .footer-links-col a {
+      text-decoration: none; font-size: 0.87rem;
+      color: rgba(232,201,180,0.65); transition: color 0.2s;
+    }
+    .footer-links-col a:hover { color: var(--caramel); }
+
+    .footer-bottom {
+      display: flex; justify-content: space-between; align-items: center;
+      font-size: 0.78rem; opacity: 0.45; flex-wrap: wrap; gap: 0.5rem;
+    }
+
+    /* ── WHATSAPP FLOAT ── */
+    .wa-float {
+      position: fixed; bottom: 2rem; right: 2rem;
+      background: #25D366; color: white;
+      width: 54px; height: 54px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; text-decoration: none;
+      box-shadow: 0 4px 16px rgba(37,211,102,0.45);
+      z-index: 999; transition: transform 0.2s;
+    }
+    .wa-float:hover { transform: scale(1.1); }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(28px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { opacity: 0; animation: fadeUp 0.7s ease forwards; }
+    .fade-up:nth-child(1) { animation-delay: 0.1s; }
+    .fade-up:nth-child(2) { animation-delay: 0.25s; }
+    .fade-up:nth-child(3) { animation-delay: 0.4s; }
+    .fade-up:nth-child(4) { animation-delay: 0.55s; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 960px) {
+      nav { padding: 1rem 1.5rem; }
+      .nav-links {
+        display: none; flex-direction: column;
+        position: absolute; top: 64px; left: 0; right: 0;
+        background: var(--cream); padding: 1.5rem 2rem;
+        border-bottom: 1px solid rgba(92,61,46,0.1);
+        gap: 1rem;
+      }
+      .nav-links.open { display: flex; }
+      .hamburger { display: block; }
+
+      #hero { flex-direction: column; padding: 6rem 1.5rem 3rem; gap: 2.5rem; }
+      #about { flex-direction: column; padding: 4rem 1.5rem; gap: 3rem; }
+      .about-badge { display: none; }
+      #menu, #testimonials, #contact, #testimonials { padding: 4rem 1.5rem; }
+      .menu-grid { grid-template-columns: 1fr 1fr; }
+      .reviews-grid { grid-template-columns: 1fr; }
+      .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      footer { padding: 2.5rem 1.5rem; }
+      .footer-top { flex-direction: column; }
+    }
+
+    @media (max-width: 560px) {
+      .menu-grid { grid-template-columns: 1fr; }
+      .hero-buttons { flex-direction: column; align-items: flex-start; }
+      .about-stats { grid-template-columns: 1fr; }
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ── NAVBAR ── -->
+  <nav id="navbar">
+    <div class="logo">Brew <span>&</span> Bloom</div>
+    <ul class="nav-links" id="navLinks">
+      <li><a href="#hero">Home</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#menu">Menu</a></li>
+      <li><a href="#testimonials">Reviews</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger">☰</button>
+  </nav>
+
+  <!-- ── HERO ── -->
+  <section id="hero">
+    <div class="hero-text">
+      <p class="eyebrow fade-up">Established 2018 · Banjara Hills, Hyderabad</p>
+      <h1 class="fade-up">Where Every Cup<br>Tells a <em>Story</em></h1>
+      <p class="hero-sub fade-up">Specialty coffee, artisan brews & freshly baked pastries — crafted with love in the heart of the city.</p>
+      <div class="hero-buttons fade-up">
+        <a href="#menu" class="btn-primary">Explore Menu</a>
+        <a href="#contact" class="btn-outline">Reserve a Table</a>
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="hero-img-frame">
+        <svg width="65%" viewBox="0 0 200 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M40 80 L45 180 Q100 195 155 180 L160 80 Z" fill="#5C3D2E" opacity="0.85"/>
+          <ellipse cx="100" cy="80" rx="60" ry="14" fill="#7A4E3A"/>
+          <ellipse cx="100" cy="80" rx="54" ry="12" fill="#A0785A"/>
+          <path d="M100 70 Q115 72 120 80 Q110 88 100 85 Q90 88 80 80 Q85 72 100 70Z" fill="#C8853A" opacity="0.7"/>
+          <path d="M100 76 Q108 77 110 80 Q105 84 100 83 Q95 84 90 80 Q92 77 100 76Z" fill="#E8D5C4" opacity="0.5"/>
+          <path d="M80 55 Q84 45 80 35" stroke="#C8853A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+          <path d="M100 50 Q104 40 100 30" stroke="#C8853A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+          <path d="M120 55 Q124 45 120 35" stroke="#C8853A" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.5"/>
+          <path d="M155 105 Q185 105 185 130 Q185 155 155 155" stroke="#5C3D2E" stroke-width="10" fill="none" stroke-linecap="round"/>
+          <ellipse cx="100" cy="185" rx="75" ry="12" fill="#A0785A" opacity="0.5"/>
+        </svg>
+        <div class="hero-badge">
+          <span class="badge-num">4.9</span>
+          <span class="badge-label">★ Google Rating</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MARQUEE ── -->
+  <div class="marquee-bar">
+    <div class="marquee-track">
+      <span class="marquee-item">Specialty Coffee <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Freshly Baked <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Cold Brews <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Vegan Options <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Free WiFi <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Live Music Fridays <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Loyalty Program <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Specialty Coffee <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Freshly Baked <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Cold Brews <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Vegan Options <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Free WiFi <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Live Music Fridays <span class="marquee-dot">✦</span></span>
+      <span class="marquee-item">Loyalty Program <span class="marquee-dot">✦</span></span>
+    </div>
+  </div>
+
+  <!-- ── ABOUT ── -->
+  <section id="about">
+    <div class="about-img">
+      <div class="about-img-box">☕</div>
+      <div class="about-badge">
+        <strong>8+</strong>
+        <span>Years of Love</span>
+      </div>
+    </div>
+    <div class="about-text">
+      <span class="section-label">Our Story</span>
+      <h2 class="section-title">A Little Café with<br>a Big Heart</h2>
+      <p>Founded in 2018, Brew & Bloom started as a small corner café in Banjara Hills. We believe great coffee is more than a drink — it is a moment of calm in your busy day.</p>
+      <p>Every bean is sourced directly from farms in Coorg and Araku Valley. Our bakers arrive at 5am every morning to make everything fresh from scratch, because you deserve nothing less.</p>
+      <div class="about-stats">
+        <div class="stat-card">
+          <span class="stat-num">50+</span>
+          <span class="stat-label">Menu Items</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">200+</span>
+          <span class="stat-label">Daily Guests</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-num">4.9★</span>
+          <span class="stat-label">Google Rating</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── MENU ── -->
+  <section id="menu">
+    <span class="section-label">What We Serve</span>
+    <h2 class="section-title">Our Menu</h2>
+    <div class="menu-grid">
+
+      <div class="menu-card">
+        <span class="menu-emoji">☕</span>
+        <h3>Signature Latte</h3>
+        <p>Smooth espresso with steamed oat milk and a hint of caramel.</p>
+        <div class="menu-footer">
+          <span class="price">₹220</span>
+          <button class="order-btn">Order</button>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <span class="menu-emoji">🧁</span>
+        <h3>Blueberry Muffin</h3>
+        <p>Freshly baked every morning with real blueberries and a crunchy top.</p>
+        <div class="menu-footer">
+          <span class="price">₹120</span>
+          <button class="order-btn">Order</button>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <span class="menu-emoji">🥐</span>
+        <h3>Butter Croissant</h3>
+        <p>Flaky, golden, classic. Pairs perfectly with any coffee on the menu.</p>
+        <div class="menu-footer">
+          <span class="price">₹150</span>
+          <button class="order-btn">Order</button>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <span class="menu-emoji">🥤</span>
+        <h3>Cold Brew</h3>
+        <p>18-hour slow brewed coffee served over ice with your choice of milk.</p>
+        <div class="menu-footer">
+          <span class="price">₹250</span>
+          <button class="order-btn">Order</button>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <span class="menu-emoji">🍵</span>
+        <h3>Matcha Latte</h3>
+        <p>Japanese ceremonial matcha whisked with honey and whole milk.</p>
+        <div class="menu-footer">
+          <span class="price">₹260</span>
+          <button class="order-btn">Order</button>
+        </div>
+      </div>
+
+      <div class="menu-card">
+        <span class="menu-emoji">🥪</span>
+        <h3>Avocado Toast</h3>
+        <p>Sourdough, smashed avocado, cherry tomatoes and micro greens.</p>
+        <div class="menu-footer">
+          <span class="price">₹320</span>
+          <button class="order-btn">Order</button>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── TESTIMONIALS ── -->
+  <section id="testimonials">
+    <span class="section-label">What People Say</span>
+    <h2 class="section-title">Customer Reviews</h2>
+    <div class="reviews-grid">
+
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Hands down the best café in Hyderabad. The cold brew is absolutely perfect and the vibe is unmatched."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">AR</div>
+          <div>
+            <div class="reviewer-name">Arjun Reddy</div>
+            <div class="reviewer-sub">Regular Customer</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"I come here every single morning before work. The croissants are fresh, the staff is warm and the coffee is perfect."</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">PS</div>
+          <div>
+            <div class="reviewer-name">Priya Sharma</div>
+            <div class="reviewer-sub">Food Blogger</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="review-card">
+        <div class="stars">★★★★★</div>
+        <p class="review-text">"Great ambiance, great coffee and even better service. Finally found my go-to spot in Banjara Hills!"</p>
+        <div class="reviewer">
+          <div class="reviewer-avatar">MK</div>
+          <div>
+            <div class="reviewer-name">Mohammed Khan</div>
+            <div class="reviewer-sub">Google Review</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── CONTACT ── -->
+  <section id="contact">
+    <span class="section-label">Find Us</span>
+    <h2 class="section-title">Get In Touch</h2>
+    <div class="contact-grid">
+
+      <div class="contact-info">
+        <p>📍 12-A, Road No. 2, Banjara Hills<br>Hyderabad – 500034</p>
+        <p>📞 +91 98765 43210</p>
+        <p>✉️ hello@brewandbloom.in</p>
+        <p>🕐 Monday – Sunday: 8am – 10pm</p>
+        <a href="https://wa.me/919876543210" class="whatsapp-btn" target="_blank">💬 Chat on WhatsApp</a>
+        <div class="map-wrap">
+          <iframe
+            src="https://maps.google.com/maps?q=Banjara+Hills+Hyderabad&output=embed"
+            width="100%" height="220"
+            style="border:0; display:block;"
+            allowfullscreen="" loading="lazy">
+          </iframe>
+        </div>
+      </div>
+
+      <div class="contact-form-box">
+        <h3>Send a Message</h3>
+        <form id="contactForm">
+          <input type="text" id="name" placeholder="Your Name" required>
+          <input type="email" id="email" placeholder="Your Email" required>
+          <input type="tel" id="phone" placeholder="Your Phone Number">
+          <textarea id="message" rows="5" placeholder="Your message or reservation request..."></textarea>
+          <button type="submit" class="btn-primary" style="width:100%; justify-content:center;">Send Message</button>
+        </form>
+        <p id="form-success" style="display:none; color:#2C7A4B; margin-top:1rem; font-weight:500;">
+          ✅ Message sent! We will get back to you soon.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── FOOTER ── -->
+  <footer>
+    <div class="footer-top">
+      <div class="footer-brand">
+        <h3>Brew & Bloom Café</h3>
+        <p>A quiet corner in a busy city. Come as you are, stay as long as you like.</p>
+      </div>
+      <div class="footer-links-col">
+        <h4>Quick Links</h4>
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#about">About Us</a></li>
+          <li><a href="#menu">Our Menu</a></li>
+          <li><a href="#testimonials">Reviews</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-col">
+        <h4>Opening Hours</h4>
+        <ul>
+          <li><a href="#">Mon – Fri: 8am – 10pm</a></li>
+          <li><a href="#">Saturday: 8am – 11pm</a></li>
+          <li><a href="#">Sunday: 9am – 9pm</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-col">
+        <h4>Follow Us</h4>
+        <ul>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">Facebook</a></li>
+          <li><a href="#">Google Maps</a></li>
+          <li><a href="#">Zomato</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Brew & Bloom Café. All rights reserved.</span>
+      <span>Made with ♥ in Hyderabad</span>
+    </div>
+  </footer>
+
+  <!-- ── WHATSAPP FLOAT BUTTON ── -->
+  <a href="https://wa.me/919876543210" class="wa-float" target="_blank" title="Chat on WhatsApp">💬</a>
+
+  <!-- ── JAVASCRIPT ── -->
+  <script>
+
+    // Sticky navbar shadow on scroll
+    window.addEventListener('scroll', () => {
+      const nav = document.getElementById('navbar');
+      if (window.scrollY > 60) {
+        nav.classList.add('scrolled');
+      } else {
+        nav.classList.remove('scrolled');
+      }
+    });
+
+    // Hamburger menu toggle for mobile
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    hamburger.addEventListener('click', () => {
+      navLinks.classList.toggle('open');
+      hamburger.textContent = navLinks.classList.contains('open') ? '✕' : '☰';
+    });
+
+    // Close menu when any nav link is clicked
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('open');
+        hamburger.textContent = '☰';
+      });
+    });
+
+    // Contact form validation
+    document.getElementById('contactForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+
+      const name = document.getElementById('name').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const message = document.getElementById('message').value.trim();
+
+      if (!name || !email) {
+        alert('Please enter your name and email.');
+        return;
+      }
+
+      const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailPattern.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      document.getElementById('form-success').style.display = 'block';
+      this.reset();
+
+      setTimeout(() => {
+        document.getElementById('form-success').style.display = 'none';
+      }, 5000);
+    });
+
+    // Order button click
+    document.querySelectorAll('.order-btn').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const cardName = this.closest('.menu-card').querySelector('h3').textContent;
+        alert('Thank you! Your order for "' + cardName + '" has been noted. We will prepare it shortly!');
+      });
+    });
+
+  </script>
+</body>
+</html>
